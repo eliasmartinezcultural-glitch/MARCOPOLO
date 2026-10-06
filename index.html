@@ -5,125 +5,107 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>MARCOPOLO — Mundo de Viajes</title>
 <style>
-:root{--sky1:#9ed7ee;--sky2:#eaf4ef;--road:#34373b;--line:#e9e1bd;--ink:#182126;--glass:rgba(10,18,22,.72)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#10171b;color:white;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-button{font:inherit}
-#app{position:fixed;inset:0;background:#10171b}
-.screen{position:absolute;inset:0;display:grid;place-items:center}
-#start{background:radial-gradient(circle at 50% 34%,rgba(255,255,255,.55),transparent 28%),linear-gradient(#8ecce5 0 55%,#b6cda9 55% 100%)}
-.start-card{text-align:center;width:min(92vw,620px);padding:34px 24px}
-.kicker{letter-spacing:.25em;text-transform:uppercase;font-size:12px;opacity:.75}
-h1{font-size:clamp(42px,10vw,82px);line-height:.9;margin:12px 0;font-weight:900;letter-spacing:-.06em}
-.subtitle{font-size:clamp(16px,3vw,22px);margin:12px auto 30px;max-width:500px;opacity:.9}
-.primary{border:0;border-radius:999px;padding:16px 30px;background:#142126;color:#fff;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 12px 30px #0003}
-.primary:active{transform:translateY(2px)}
-.bus-illustration{margin:22px auto 8px;width:min(70vw,360px);height:105px;position:relative}
-.bus-illustration .body{position:absolute;left:4%;right:4%;bottom:12px;height:65px;border-radius:18px 22px 10px 10px;background:#e9e4d7;border:4px solid #1d272b;box-shadow:inset 0 -10px #bdc6c4}
-.bus-illustration .windows{position:absolute;left:12%;right:10%;top:9px;height:30px;display:flex;gap:5px}
-.bus-illustration i{display:block;flex:1;background:#273e46;border:2px solid #162126;border-radius:5px}
-.bus-illustration .wheel{position:absolute;bottom:0;width:32px;height:32px;border-radius:50%;background:#141a1d;border:6px solid #4b5659}
-.bus-illustration .w1{left:15%}.bus-illustration .w2{right:15%}
+:root{--ink:#10191c;--glass:rgba(10,16,19,.68);--cream:#f3ead6;--road:#303437;--accent:#d9b56d}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0c1417;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button{font:inherit}
+#app{position:fixed;inset:0;background:#0c1417}.screen{position:absolute;inset:0;display:grid;place-items:center}
+#start{background:radial-gradient(circle at 50% 22%,#fff7d880 0 5%,transparent 25%),linear-gradient(#8bc9df 0 52%,#9eb286 52% 100%)}
+.start-card{width:min(92vw,650px);padding:30px 24px;text-align:center}.kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7}
+h1{font-size:clamp(48px,11vw,92px);line-height:.85;margin:10px 0;font-weight:950;letter-spacing:-.07em}.subtitle{font-size:clamp(16px,3vw,21px);line-height:1.35;opacity:.9;margin:15px auto 26px}
+.primary{border:0;border-radius:999px;padding:16px 28px;background:#142126;color:#fff;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 14px 34px #0004}.primary:disabled{opacity:.45;cursor:not-allowed}
+.bus-illustration{width:min(72vw,380px);height:115px;margin:18px auto;position:relative}.bus-illustration .body{position:absolute;left:3%;right:3%;bottom:13px;height:72px;border:4px solid #172126;border-radius:20px 26px 11px 11px;background:linear-gradient(#f5f0e4,#c7cfcc);box-shadow:inset 0 -11px #b3bdbb}.bus-illustration .windows{position:absolute;left:11%;right:9%;top:9px;height:34px;display:flex;gap:5px}.bus-illustration i{flex:1;background:#29434c;border:2px solid #142126;border-radius:6px}.bus-illustration .wheel{position:absolute;bottom:0;width:34px;height:34px;border-radius:50%;background:#11181b;border:6px solid #50595b}.w1{left:14%}.w2{right:14%}
 
-#game{display:none}.routeChoice{display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;padding:15px 17px}.routeChoice span{font-size:12px;opacity:.7}.routeChoice.selected{background:#fff2;border-color:#fff8}.routeChoice:disabled{opacity:.5}
-#world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#9ed7ee 0 45%,#91b083 45% 100%)}
-#sky{position:absolute;inset:0 0 45%;background:linear-gradient(#86cbe5,#e9f2e8)}
-#sun{position:absolute;width:90px;height:90px;border-radius:50%;background:#fff1b2;top:10%;right:12%;box-shadow:0 0 50px #fff1b280}
-.mountain{position:absolute;bottom:45%;width:55%;height:27%;background:#718c83;clip-path:polygon(0 100%,28% 20%,39% 48%,58% 0,78% 55%,100% 18%,100% 100%);opacity:.75}
-.m1{left:-8%}.m2{right:-12%;transform:scaleX(-1);opacity:.55}
-#ground{position:absolute;inset:45% 0 0;background:linear-gradient(#9dbb88,#75986f)}
-#road{position:absolute;left:50%;top:43%;width:12%;height:62%;transform:translateX(-50%);background:linear-gradient(90deg,#282c30,#45484b 45%,#282c30);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%)}
-#road:before,#road:after{content:"";position:absolute;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,transparent 0 34px,var(--line) 34px 58px);opacity:.85}
-#road:before{left:50%;transform:translateX(-50%)}#road:after{display:none}
-.edge{position:absolute;top:45%;height:55%;width:3px;background:#f0ead0;opacity:.7}.e1{left:38%}.e2{right:38%}
-#scenery{position:absolute;inset:45% 0 0;pointer-events:none}
-.sign{position:absolute;top:50%;right:18%;background:#f1ead2;color:#273238;border:3px solid #273238;border-radius:4px;padding:6px 10px;font-weight:900;transform:scale(.8);transform-origin:bottom}
-.tree{position:absolute;width:70px;height:90px;bottom:18%;opacity:.8}
-.tree:before{content:"";position:absolute;left:28px;bottom:0;width:14px;height:42px;background:#614d3a}.tree:after{content:"";position:absolute;left:4px;top:0;width:62px;height:62px;border-radius:50%;background:#55775a;box-shadow:20px 8px #62845f,-15px 13px #4d7053}
-.t1{left:7%;transform:scale(.8)}.t2{right:7%;transform:scale(1.05)}
-#traffic{position:absolute;inset:0;pointer-events:none}
-.car{position:absolute;width:36px;height:60px;border-radius:9px;background:#d7d7d0;border:3px solid #252b2e;bottom:20%;left:50%;transform:translateX(-50%);opacity:0}
-.car.red{background:#a74c42}.car.blue{background:#55748a}.car.truck{width:46px;height:86px;background:#d5c7a9}
-#bus{position:absolute;z-index:5;left:50%;bottom:11%;width:min(29vw,210px);min-width:145px;aspect-ratio:1.65/1;transform:translateX(-50%);filter:drop-shadow(0 18px 12px #0005);transition:transform .12s linear}
-#bus .shell{position:absolute;inset:4% 0 8%;border-radius:20px 24px 11px 11px;background:linear-gradient(#f2eee4,#cfd5d0);border:4px solid #172126}
-#bus .glass{position:absolute;left:12%;right:10%;top:11%;height:28%;display:flex;gap:5px}.glass i{flex:1;background:#29424a;border:2px solid #142127;border-radius:5px}
-#bus .bumper{position:absolute;bottom:3%;left:9%;right:9%;height:9px;background:#172126;border-radius:10px}
-.wheel{position:absolute;bottom:0;width:30px;height:30px;border-radius:50%;background:#11181b;border:6px solid #4c575b}.wl{left:13%}.wr{right:13%}
-#hud{position:absolute;z-index:10;inset:0;pointer-events:none}
-.top{position:absolute;left:14px;right:14px;top:12px;display:flex;justify-content:space-between;gap:10px}
-.pill{background:var(--glass);backdrop-filter:blur(12px);border:1px solid #fff2;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 25px #0002}
-.pill b{display:block;font-size:15px}
-#message{position:absolute;left:50%;top:17%;transform:translateX(-50%);width:min(90vw,520px);background:var(--glass);backdrop-filter:blur(14px);border:1px solid #fff2;border-radius:18px;padding:15px 18px;text-align:center;opacity:0;transition:.3s}
-#message.show{opacity:1}
-#message strong{display:block;font-size:16px;margin-bottom:4px}
-#dialogue{position:absolute;left:50%;bottom:27%;transform:translateX(-50%);width:min(92vw,580px);display:none;pointer-events:auto;background:rgba(10,17,20,.9);border:1px solid #fff2;border-radius:18px;padding:16px;box-shadow:0 20px 50px #0006}
-#dialogue .who{font-weight:900}.choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.choice{flex:1;min-width:120px;border:1px solid #fff3;background:#ffffff10;color:#fff;border-radius:12px;padding:11px;cursor:pointer}.choice:hover{background:#ffffff20}
-#controls{position:absolute;z-index:20;bottom:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:auto}
-.pad{display:grid;grid-template-columns:58px 58px 58px;grid-template-rows:58px 58px;gap:7px}
-.ctrl{border:1px solid #fff3;background:var(--glass);color:#fff;border-radius:16px;font-size:24px;touch-action:none;user-select:none}.up{grid-column:2}.left{grid-column:1;grid-row:2}.down{grid-column:2;grid-row:2}.right{grid-column:3;grid-row:2}
-.actions{display:flex;gap:7px}.small{width:58px;height:58px;font-size:11px;font-weight:800}
-#speedBox{background:var(--glass);backdrop-filter:blur(12px);border:1px solid #fff2;border-radius:16px;padding:9px 14px;min-width:105px;text-align:center}
-#speed{font-size:30px;font-weight:900;line-height:1}.unit{font-size:10px;opacity:.7}
-#map{position:absolute;z-index:30;right:14px;top:68px;width:190px;background:rgba(10,17,20,.92);border:1px solid #fff2;border-radius:16px;padding:12px;display:none}
-.mapline{height:6px;background:#738579;border-radius:5px;position:relative;margin:22px 5px}.dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 4px #fff3}.startdot{left:0}.now{left:45%}.dest{left:100%}.maplabels{display:flex;justify-content:space-between;font-size:9px;opacity:.7}
-#flash{position:absolute;z-index:50;inset:0;background:#fff;opacity:0;pointer-events:none}
-@media(max-width:600px){.top{top:8px}.pill{padding:7px 9px}.pill b{font-size:13px}#bus{bottom:17%;width:45vw}.edge.e1{left:25%}.edge.e2{right:25%}.road{width:20%}.sign{right:7%}#dialogue{bottom:29%}.pad{grid-template-columns:52px 52px 52px;grid-template-rows:52px 52px}.ctrl{font-size:21px}.small{width:52px;height:52px}.actions{flex-direction:column}}
+#routeSelect{display:none;background:radial-gradient(circle at 50% 20%,#d9c39a,#6d8174 62%,#233538);z-index:40}.route-panel{width:min(94vw,720px);padding:26px;background:#0c171acc;border:1px solid #ffffff24;border-radius:28px;box-shadow:0 30px 100px #0008;backdrop-filter:blur(16px)}.route-panel h2{font-size:clamp(30px,7vw,58px);margin:8px 0}.route-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.routeChoice{min-height:120px;text-align:left;border:1px solid #fff2;background:#fff09;color:#fff;border-radius:17px;padding:15px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}.routeChoice strong{font-size:15px}.routeChoice span{font-size:12px;opacity:.65}.routeChoice.selected{background:#fff20f;border-color:#fff8;transform:translateY(-3px)}@media(max-width:650px){.route-grid{grid-template-columns:1fr}.routeChoice{min-height:78px}}
+
+#game{display:none;position:absolute;inset:0}
+#world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#8ccbe1 0 44%,#91aa7e 44% 100%);transition:filter 1s}
+#sky{position:absolute;inset:0 0 44%;background:linear-gradient(#7fc5df,#eef2e8)}#sun{position:absolute;width:100px;height:100px;border-radius:50%;background:#fff0ad;top:8%;right:13%;box-shadow:0 0 65px #fff3}
+#haze{position:absolute;inset:28% 0 0;background:linear-gradient(transparent,#fff2);pointer-events:none}.mountain{position:absolute;bottom:44%;width:62%;height:28%;background:#647f78;clip-path:polygon(0 100%,20% 35%,35% 52%,54% 0,70% 48%,86% 25%,100% 100%);opacity:.78}.m1{left:-12%}.m2{right:-15%;transform:scaleX(-1);opacity:.55}
+#ground{position:absolute;inset:44% 0 0;background:linear-gradient(#9bb984,#69885f)}#road{position:absolute;left:50%;top:41%;width:14%;height:65%;transform:translateX(-50%);background:linear-gradient(90deg,#24282b,#4b4e4f 45%,#24282b);clip-path:polygon(39% 0,61% 0,100% 100%,0 100%);transition:transform .4s}
+#road:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 34px,#e7ddae 34px 58px);width:5px;left:50%;transform:translateX(-50%);opacity:.9}
+.edge{position:absolute;top:44%;height:56%;width:3px;background:#f1e9c9;opacity:.8}.e1{left:38%}.e2{right:38%}
+.scenery{position:absolute;inset:44% 0 0;pointer-events:none}.sign{position:absolute;top:51%;right:15%;background:#eee5ca;color:#263235;border:3px solid #263235;border-radius:4px;padding:6px 10px;font-weight:950;box-shadow:8px 10px 20px #0003}.tree{position:absolute;width:70px;height:100px;bottom:18%}.tree:before{content:"";position:absolute;left:29px;bottom:0;width:13px;height:45px;background:#604b39}.tree:after{content:"";position:absolute;left:2px;top:0;width:66px;height:66px;border-radius:50%;background:#507255;box-shadow:22px 9px #62865e,-16px 16px #46694e}.t1{left:7%;transform:scale(.85)}.t2{right:7%;transform:scale(1.15)}
+#traffic{position:absolute;inset:0;pointer-events:none}.car{position:absolute;width:38px;height:62px;border-radius:9px;background:#d8d5ca;border:3px solid #252b2e;left:50%;opacity:0}.red{background:#a85247}.blue{background:#55748a}.truck{width:48px;height:88px;background:#cbbd9e}
+#bus{position:absolute;z-index:5;left:50%;bottom:10%;width:min(30vw,220px);min-width:150px;aspect-ratio:1.65/1;transform:translateX(-50%);filter:drop-shadow(0 18px 13px #0007);transition:transform .08s linear}.shell{position:absolute;inset:4% 0 8%;border:4px solid #172126;border-radius:20px 25px 12px 12px;background:linear-gradient(#f4efe3,#cdd5d2)}.glass{position:absolute;left:12%;right:10%;top:10%;height:30%;display:flex;gap:5px}.glass i{flex:1;background:#263f48;border:2px solid #132127;border-radius:5px}.bumper{position:absolute;bottom:3%;left:9%;right:9%;height:9px;background:#172126;border-radius:10px}.wheel{position:absolute;bottom:0;width:31px;height:31px;border-radius:50%;background:#11181b;border:6px solid #4c575a}.wl{left:13%}.wr{right:13%}
+
+#hud{position:absolute;inset:0;z-index:10;pointer-events:none}.top{position:absolute;left:12px;right:12px;top:10px;display:flex;gap:8px;justify-content:space-between}.pill{background:var(--glass);backdrop-filter:blur(12px);border:1px solid #fff2;border-radius:14px;padding:8px 11px;font-size:10px;box-shadow:0 8px 25px #0002}.pill b{display:block;font-size:14px;margin-top:2px}
+#message{position:absolute;left:50%;top:15%;transform:translateX(-50%);width:min(90vw,560px);background:var(--glass);backdrop-filter:blur(15px);border:1px solid #fff2;border-radius:18px;padding:14px 18px;text-align:center;opacity:0;transition:.35s;box-shadow:0 20px 50px #0004}#message.show{opacity:1}#message strong{display:block;font-size:16px;margin-bottom:3px}
+#dialogue{position:absolute;left:50%;bottom:27%;transform:translateX(-50%);width:min(92vw,610px);display:none;pointer-events:auto;background:#091114ed;border:1px solid #fff2;border-radius:20px;padding:17px;box-shadow:0 25px 70px #0008}.who{font-weight:950;color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.08em}.line{font-size:17px;line-height:1.35;margin-top:6px}.choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.choice{flex:1;min-width:120px;border:1px solid #fff3;background:#ffffff0d;color:#fff;border-radius:13px;padding:11px;cursor:pointer}.choice:hover{background:#fff18}
+#controls{position:absolute;z-index:20;bottom:11px;left:11px;right:11px;display:flex;justify-content:space-between;align-items:end;pointer-events:auto}.pad{display:grid;grid-template-columns:56px 56px 56px;grid-template-rows:56px 56px;gap:6px}.ctrl{border:1px solid #fff3;background:var(--glass);color:#fff;border-radius:15px;font-size:22px;touch-action:none;user-select:none;backdrop-filter:blur(10px)}.up{grid-column:2}.left{grid-column:1;grid-row:2}.down{grid-column:2;grid-row:2}.right{grid-column:3;grid-row:2}.actions{display:flex;gap:6px}.small{width:58px;height:58px;font-size:10px;font-weight:900}
+#speedBox{background:var(--glass);backdrop-filter:blur(12px);border:1px solid #fff2;border-radius:16px;padding:8px 15px;min-width:100px;text-align:center}.speed{font-size:29px;font-weight:950;line-height:1}.unit{font-size:9px;opacity:.65}
+#map,#passengers{position:absolute;z-index:35;right:12px;top:65px;width:min(260px,82vw);background:#091114ef;border:1px solid #fff2;border-radius:17px;padding:14px;display:none;box-shadow:0 20px 50px #0007}.mapline{height:6px;background:#63776e;border-radius:5px;position:relative;margin:25px 7px}.dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 4px #fff3}.startdot{left:0}.now{left:45%}.dest{left:100%}.maplabels{display:flex;justify-content:space-between;font-size:9px;opacity:.7}.passenger{padding:9px 0;border-bottom:1px solid #fff1}.passenger:last-child{border:0}.passenger b{display:block}.passenger span{font-size:11px;opacity:.65}
+#pausePanel{position:absolute;z-index:45;inset:0;display:none;place-items:center;background:#071013b8;backdrop-filter:blur(8px)}.pause-card{width:min(88vw,430px);background:#0d181ceF;border:1px solid #fff2;border-radius:24px;padding:28px;text-align:center}.pause-card h3{font-size:34px;margin:0 0 8px}
+#toast{position:absolute;z-index:60;left:50%;bottom:105px;transform:translateX(-50%) translateY(20px);opacity:0;background:#f3ead6;color:#182126;padding:9px 15px;border-radius:999px;font-weight:800;font-size:12px;transition:.25s}#toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:600px){.top{top:7px}.pill{padding:6px 8px}.pill b{font-size:12px}.top .pill:nth-child(1){max-width:43vw}.pad{grid-template-columns:50px 50px 50px;grid-template-rows:50px 50px}.ctrl{font-size:20px}.small{width:50px;height:50px}.actions{flex-direction:column}#bus{width:47vw;bottom:16%}#dialogue{bottom:28%}.sign{right:5%}.edge.e1{left:24%}.edge.e2{right:24%}}
 </style>
 </head>
 <body>
 <div id="app">
 <section id="start" class="screen">
-  <div class="start-card">
-    <div class="kicker">Mundo de Viajes · Alpha 0.2</div>
-    <h1>MARCOPOLO</h1>
-    <div class="bus-illustration"><div class="body"><div class="windows"><i></i><i></i><i></i><i></i></div></div><div class="wheel w1"></div><div class="wheel w2"></div></div>
-    <p class="subtitle">No se trata de llegar rápido.<br><b>Se trata de vivir el viaje.</b></p>
-    <button class="primary" id="startBtn">Elegir viaje</button>
-  </div>
+<div class="start-card"><div class="kicker">Mundo de Viajes · Alpha 0.3</div><h1>MARCOPOLO</h1><div class="bus-illustration"><div class="body"><div class="windows"><i></i><i></i><i></i><i></i></div></div><div class="wheel w1"></div><div class="wheel w2"></div></div><p class="subtitle">No se trata de llegar rápido.<br><b>Se trata de vivir el viaje.</b></p><button class="primary" id="startBtn">Elegir viaje</button></div>
 </section>
-
-<section id="routeSelect" class="screen" style="display:none;background:radial-gradient(circle at 50% 25%,#d9c8a4,#6f8175 65%,#26383a);z-index:40"><div class="start-card" style="background:#101a1dcc;border:1px solid #fff2;border-radius:26px;box-shadow:0 30px 80px #0008"><div class="kicker">MARCOPOLO · PLAN DE VIAJE</div><h2 style="font-size:clamp(30px,7vw,58px);margin:10px 0">Elegí tu salida</h2><p class="subtitle">Todas las rutas tienen un mismo destino.<br><b>San Patricio del Chañar.</b></p><div id="routeCards" style="display:grid;gap:10px;text-align:left;margin:22px 0"><button class="choice routeChoice" data-route="neuquen"><b>NEUQUÉN → CHÁÑAR</b><span>Ciudad · ruta abierta · 28 km</span></button><button class="choice routeChoice" data-route="anelo"><b>AÑELO → CHÁÑAR</b><span>Meseta · viento · 22 km</span></button><button class="choice routeChoice" data-route="vista"><b>VISTA ALEGRE → CHÁÑAR</b><span>Valle · chacras · 16 km</span></button></div><button class="primary" id="departBtn" disabled>Preparar colectivo</button></div></section>
+<section id="routeSelect" class="screen">
+<div class="route-panel"><div class="kicker">MARCOPOLO · PLAN DE VIAJE</div><h2>¿Desde dónde viajás?</h2><p class="subtitle" style="margin-left:0">El destino siempre es el mismo.<br><b>Lo que cambia es la aventura.</b></p><div class="route-grid">
+<button class="routeChoice" data-route="neuquen"><strong>NEUQUÉN → CHÁÑAR</strong><span>Ciudad · tránsito · salida larga</span><span>Ruta urbana + abierta</span></button>
+<button class="routeChoice" data-route="anelo"><strong>AÑELO → CHÁÑAR</strong><span>Meseta · viento · horizonte</span><span>Ruta abierta + paradores</span></button>
+<button class="routeChoice" data-route="vista"><strong>VISTA ALEGRE → CHÁÑAR</strong><span>Valle · chacras · acequias</span><span>Ruta corta + vida rural</span></button>
+</div><button class="primary" id="departBtn" disabled>Preparar colectivo</button></div>
+</section>
 <section id="game">
-  <div id="world"><div id="sky"></div><div id="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div id="ground"></div><div id="road"></div><div class="edge e1"></div><div class="edge e2"></div><div id="scenery"><div class="tree t1"></div><div class="tree t2"></div><div class="sign">CHAÑAR →</div></div><div id="traffic"><div class="car c1"></div><div class="car c2 red"></div><div class="car c3 blue"></div><div class="car c4 truck"></div></div></div>
-  <div id="bus"><div class="shell"><div class="glass"><i></i><i></i><i></i></div><div class="bumper"></div></div><div class="wheel wl"></div><div class="wheel wr"></div></div>
-  <div id="hud">
-    <div class="top"><div class="pill">DESTINO<b>San Patricio del Chañar</b></div><div class="pill">COMBUSTIBLE <b id="fuel">78%</b></div><div class="pill">06:50 · <b id="km">0.0 km</b></div></div>
-    <div id="message"><strong id="msgTitle"></strong><span id="msgText"></span></div>
-    <div id="dialogue"><div class="who" id="who"></div><div id="line"></div><div class="choices" id="choices"></div></div>
-    <div id="controls"><div class="pad"><button class="ctrl up" data-key="up">▲</button><button class="ctrl left" data-key="left">◀</button><button class="ctrl down" data-key="down">▼</button><button class="ctrl right" data-key="right">▶</button></div><div id="speedBox"><div id="speed">0</div><div class="unit">KM/H</div></div><div class="actions"><button class="ctrl small" id="mapBtn">MAPA</button><button class="ctrl small" id="pauseBtn">PAUSA</button></div></div>
-  </div>
-  <div id="map"><b>RUTA 001</b><div class="mapline"><span class="dot startdot"></span><span class="dot now"></span><span class="dot dest"></span></div><div class="maplabels"><span>Salida</span><span>Ahora</span><span>Chañar</span></div></div>
-  <div id="flash"></div>
+<div id="world"><div id="sky"></div><div id="sun"></div><div id="haze"></div><div class="mountain m1"></div><div class="mountain m2"></div><div id="ground"></div><div id="road"></div><div class="edge e1"></div><div class="edge e2"></div><div class="scenery"><div class="tree t1"></div><div class="tree t2"></div><div class="sign" id="sign">CHAÑAR →</div></div><div id="traffic"><div class="car"></div><div class="car red"></div><div class="car blue"></div><div class="car truck"></div></div></div>
+<div id="bus"><div class="shell"><div class="glass"><i></i><i></i><i></i></div><div class="bumper"></div></div><div class="wheel wl"></div><div class="wheel wr"></div></div>
+<div id="hud"><div class="top"><div class="pill">DESTINO<b>San Patricio del Chañar</b></div><div class="pill">COMBUSTIBLE <b id="fuel">78%</b></div><div class="pill"><span id="clock">06:50</span> · <b id="km">0.0 km</b></div></div>
+<div id="message"><strong id="msgTitle"></strong><span id="msgText"></span></div>
+<div id="dialogue"><div class="who" id="who"></div><div class="line" id="line"></div><div class="choices" id="choices"></div></div>
+<div id="controls"><div class="pad"><button class="ctrl up" data-key="up">▲</button><button class="ctrl left" data-key="left">◀</button><button class="ctrl down" data-key="down">▼</button><button class="ctrl right" data-key="right">▶</button></div><div id="speedBox"><div class="speed" id="speed">0</div><div class="unit">KM/H</div></div><div class="actions"><button class="ctrl small" id="mapBtn">MAPA</button><button class="ctrl small" id="peopleBtn">PASAJ.</button><button class="ctrl small" id="pauseBtn">PAUSA</button></div></div></div>
+<div id="map"><b id="mapTitle">RUTA</b><div class="mapline"><span class="dot startdot"></span><span class="dot now" id="mapNow"></span><span class="dot dest"></span></div><div class="maplabels"><span id="mapStart">Salida</span><span>Ahora</span><span>Chañar</span></div><p style="font-size:11px;opacity:.65">El camino se descubre mientras viajás.</p></div>
+<div id="passengers"><b>LOS QUE VIAJAN</b><div id="passengerList"></div></div>
+<div id="pausePanel"><div class="pause-card"><div class="kicker">MARCOPOLO</div><h3>Viaje en pausa</h3><p style="opacity:.65">El mundo queda esperando.</p><button class="primary" id="resumeBtn">Continuar viaje</button></div></div>
+<div id="toast"></div>
 </section>
 </div>
 <script>
 const $=s=>document.querySelector(s);
-const start=$("#start"), routeSelect=$("#routeSelect"), game=$("#game"), bus=$("#bus"), speedEl=$("#speed"), fuelEl=$("#fuel"), kmEl=$("#km"), msg=$("#message"), msgTitle=$("#msgTitle"), msgText=$("#msgText"), dialogue=$("#dialogue");
-let running=false, paused=false, speed=0, fuel=78, km=0, lane=0, elapsed=0, eventIndex=0, last=performance.now(), selectedRoute=null;
+const start=$("#start"),routeSelect=$("#routeSelect"),game=$("#game"),bus=$("#bus"),speedEl=$("#speed"),fuelEl=$("#fuel"),kmEl=$("#km"),clockEl=$("#clock"),msg=$("#message"),dialogue=$("#dialogue"),world=$("#world");
+let running=false,paused=false,speed=0,fuel=78,km=0,lane=0,elapsed=0,eventIndex=0,last=performance.now(),selectedRoute=null,routeDistance=18;
 const keys={up:false,down:false,left:false,right:false};
-const events=[
- {at:3,type:"info",title:"Salida",text:"El colectivo deja la terminal. Comienza el viaje rumbo a San Patricio del Chañar."},
- {at:9,type:"dialogue",who:"Marta",line:"Disculpe, ¿falta mucho para Chañar?",choices:["Todavía falta.","Vamos bien.","Estamos llegando."]},
- {at:17,type:"info",title:"La ruta cambia",text:"La ciudad queda atrás. Aparece el camino abierto y el paisaje comienza a respirar."},
- {at:26,type:"info",title:"Curvas adelante",text:"Una sucesión de curvas se acerca. Bajá un poco la velocidad y disfrutá el camino."},
- {at:38,type:"dialogue",who:"Tomás",line:"Mirá esas montañas... cada vez que paso por acá me quedo mirando.",choices:["Sí, es hermoso.","Concentrate en el viaje.","¿Venís seguido?"]},
- {at:52,type:"station",title:"Parador",text:"Una estación aparece sobre la ruta. Podés detenerte o continuar."}
-];
-function showMsg(title,text,ms=4200){msgTitle.textContent=title;msgText.textContent=text;msg.classList.add("show");clearTimeout(showMsg.t);showMsg.t=setTimeout(()=>msg.classList.remove("show"),ms)}
-function showDialogue(e){paused=true;dialogue.style.display="block";$("#who").textContent=e.who;$("#line").textContent=e.line;const c=$("#choices");c.innerHTML="";e.choices.forEach(x=>{const b=document.createElement("button");b.className="choice";b.textContent=x;b.onclick=()=>{dialogue.style.display="none";paused=false;showMsg(e.who,x,2200)};c.appendChild(b)})}
-function trigger(e){if(e.type==="dialogue")showDialogue(e);else showMsg(e.title,e.text);if(e.type==="station"){paused=true;setTimeout(()=>{paused=false;fuel=Math.min(100,fuel+18);showMsg("Continuamos","El colectivo retoma la ruta con el tanque más lleno.",3000)},2600)}}
+const routes={
+ neuquen:{name:"Neuquén",distance:28,sign:"CENTENARIO →",theme:"city",passengers:[["Marta","62 · visita a su hermana"],["Tomás","27 · vuelve a Chañar"],["Lucía","19 · estudiante"],["Raúl","48 · trabaja en la ruta"],["Sonia","35 · viaja con su hija"],["Ezequiel","41 · lleva herramientas"],["Nora","55 · va al mercado"],["Pablo","31 · cambia de turno"]]},
+ anelo:{name:"Añelo",distance:22,sign:"SAN PATRICIO DEL CHAÑAR →",theme:"desert",passengers:[["Marta","62 · vuelve a casa"],["Tomás","27 · mira el paisaje"],["Lucía","19 · primera vez sola"],["Raúl","48 · conoce cada curva"],["Sonia","35 · visita familia"],["Ezequiel","41 · lleva herramientas"],["Nora","55 · parador"],["Pablo","31 · cambio de turno"]]},
+ vista:{name:"Vista Alegre",distance:16,sign:"CHAÑAR →",theme:"valley",passengers:[["Marta","62 · compra fruta"],["Tomás","27 · trabaja en Chañar"],["Lucía","19 · va a estudiar"],["Raúl","48 · productor"],["Sonia","35 · acompaña a su hija"],["Ezequiel","41 · reparto"],["Nora","55 · visita amigos"],["Pablo","31 · vuelve temprano"]]}
+};
+let passengers=[];
+function showMsg(title,text,ms=4200){$("#msgTitle").textContent=title;$("#msgText").textContent=text;msg.classList.add("show");clearTimeout(showMsg.t);showMsg.t=setTimeout(()=>msg.classList.remove("show"),ms)}
+function toast(t){const x=$("#toast");x.textContent=t;x.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove("show"),2200)}
+function buildPassengers(){passengers=routes[selectedRoute].passengers.map((p,i)=>({name:p[0],detail:p[1],mood:i%3===0?"tranquilo":i%3===1?"curioso":"cansado"}));$("#passengerList").innerHTML=passengers.map(p=>'<div class="passenger"><b>'+p.name+'</b><span>'+p.detail+' · '+p.mood+'</span></div>').join("")}
+function eventsFor(){return[
+{at:3,type:"info",title:"SALIDA",text:"Las puertas se cierran. El colectivo abandona la terminal. Ahora empieza el viaje."},
+{at:8,type:"dialogue",who:"Marta",line:"¿Falta mucho para Chañar?",choices:["Vamos tranquilos.","Todavía falta un trecho.","Ya vas a ver."]},
+{at:15,type:"ambient",title:"El mundo cambia",text:"El tránsito queda atrás. El paisaje se abre frente al colectivo."},
+{at:25,type:"dialogue",who:"Tomás",line:"Mirá ese paisaje... ¿paramos alguna vez por acá?",choices:["Hay un parador más adelante.","Hoy seguimos.","Si aparece un lugar, paramos."]},
+{at:38,type:"ambient",title:"Viento",text:"Una ráfaga cruza la ruta. El colectivo se mueve apenas. El viaje continúa."},
+{at:52,type:"station",title:"PARADOR",text:"Hay un pequeño parador. Podés quedarte unos segundos o seguir."},
+{at:68,type:"dialogue",who:"Lucía",line:"¿Cuánto falta ahora?",choices:["Cada vez menos.","Depende de la ruta.","Disfrutá el viaje."]},
+{at:82,type:"ambient",title:"Una escena del camino",text:"Un vehículo aparece a lo lejos. El mundo sigue aunque no hagas nada."}
+]}
+let events=eventsFor();
+function showDialogue(e){paused=true;dialogue.style.display="block";$("#who").textContent=e.who;$("#line").textContent=e.line;const c=$("#choices");c.innerHTML="";e.choices.forEach(x=>{const b=document.createElement("button");b.className="choice";b.textContent=x;b.onclick=()=>{dialogue.style.display="none";paused=false;toast(e.who+" · "+x);};c.appendChild(b)})}
+function trigger(e){if(e.type==="dialogue")showDialogue(e);else showMsg(e.title,e.text);if(e.type==="station"){paused=true;setTimeout(()=>{paused=false;fuel=Math.min(100,fuel+15);showMsg("SEGUIMOS","El colectivo vuelve a ponerse en marcha.",3000)},2400)}}
 function press(k,v){keys[k]=v}
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();press(k,true)});["pointerup","pointercancel","pointerleave"].forEach(ev=>b.addEventListener(ev,()=>press(k,false)))});
-addEventListener("keydown",e=>{if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=true;if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=true;if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true});
-addEventListener("keyup",e=>{if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=false;if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=false;if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false});
-$("#startBtn").onclick=()=>{start.style.display="none";routeSelect.style.display="grid";};
-const routeNames={neuquen:"Neuquén",anelo:"Añelo",vista:"Vista Alegre"};
-document.querySelectorAll(".routeChoice").forEach(b=>b.onclick=()=>{document.querySelectorAll(".routeChoice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selectedRoute=b.dataset.route;$("#departBtn").disabled=false;});
-$("#departBtn").onclick=()=>{if(!selectedRoute)return;routeSelect.style.display="none";game.style.display="block";running=true;elapsed=0;eventIndex=0;km=0;speed=0;fuel=78;showMsg("06:50 · Salida desde "+routeNames[selectedRoute],"Destino: San Patricio del Chañar · Ruta preparada",4500);requestAnimationFrame(loop)};
-$("#mapBtn").onclick=()=>{const m=$("#map");m.style.display=m.style.display==="block"?"none":"block"};
-$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"SEGUIR":"PAUSA";if(paused)showMsg("Pausa","El viaje queda detenido.",1500)};
-function animateTraffic(dt){document.querySelectorAll(".car").forEach((c,i)=>{let y=parseFloat(c.dataset.y||String(-10-i*22));y+=(speed*.015+8+i*2)*dt/1000;if(y>120)y=-15-i*12;c.dataset.y=y;c.style.top=y+"%";c.style.opacity=speed>5?"1":"0";c.style.transform="translateX(-50%) scale("+(0.45+y/220)+")"})}
-function loop(now){if(!running)return;const dt=Math.min(50,now-last);last=now;if(!paused){elapsed+=dt/1000;if(keys.up)speed=Math.min(86,speed+dt*.045);else speed=Math.max(0,speed-dt*.018);if(keys.down)speed=Math.max(0,speed-dt*.07);if(keys.left)lane=Math.max(-1,lane-dt*.0025);if(keys.right)lane=Math.min(1,lane+dt*.0025);lane*=.985;bus.style.transform="translateX(calc(-50% + "+(lane*70)+"px))";km+=speed*dt/3600000*1.85;fuel=Math.max(0,fuel-speed*dt*.00042);if(fuel<=0){speed=Math.max(0,speed-dt*.08);showMsg("Combustible","El tanque está vacío. La aventura se complica.",3000)}eventIndex=events.findIndex((e,i)=>i>=eventIndex&&elapsed>=e.at);if(eventIndex>=0){trigger(events[eventIndex]);eventIndex++}speedEl.textContent=Math.round(speed);fuelEl.textContent=Math.round(fuel)+"%";kmEl.textContent=km.toFixed(1)+" km";animateTraffic(dt);if(km>=8.2){finish()}}requestAnimationFrame(loop)}
-function finish(){running=false;paused=true;showMsg("Viaje completado","Llegaste a San Patricio del Chañar. Esta es la primera versión del mundo. Próxima fase: rutas vivas, pasajeros con memoria y paradores.",999999);setTimeout(()=>{const b=document.createElement("button");b.className="primary";b.textContent="VOLVER A VIAJAR";b.style.position="absolute";b.style.zIndex="60";b.style.left="50%";b.style.top="58%";b.style.transform="translate(-50%,-50%)";b.onclick=()=>location.reload();document.body.appendChild(b)},900)}
+addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(k==="arrowup"||k==="w")keys.up=true;if(k==="arrowdown"||k==="s")keys.down=true;if(k==="arrowleft"||k==="a")keys.left=true;if(k==="arrowright"||k==="d")keys.right=true});
+addEventListener("keyup",e=>{const k=e.key.toLowerCase();if(k==="arrowup"||k==="w")keys.up=false;if(k==="arrowdown"||k==="s")keys.down=false;if(k==="arrowleft"||k==="a")keys.left=false;if(k==="arrowright"||k==="d")keys.right=false});
+$("#startBtn").onclick=()=>{start.style.display="none";routeSelect.style.display="grid"};
+document.querySelectorAll(".routeChoice").forEach(b=>b.onclick=()=>{document.querySelectorAll(".routeChoice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selectedRoute=b.dataset.route;$("#departBtn").disabled=false});
+$("#departBtn").onclick=()=>{const r=routes[selectedRoute];routeDistance=r.distance;routeSelect.style.display="none";game.style.display="block";running=true;paused=false;speed=0;fuel=78;km=0;elapsed=0;eventIndex=0;last=performance.now();events=eventsFor();buildPassengers();$("#mapStart").textContent=r.name;$("#mapTitle").textContent="RUTA · "+r.name.toUpperCase();$("#sign").textContent=r.sign;applyTheme();showMsg("06:50 · SALIDA","Destino: San Patricio del Chañar · 8 pasajeros a bordo",4200);requestAnimationFrame(loop)};
+function applyTheme(){world.dataset.theme=selectedRoute;if(selectedRoute==="neuquen")world.style.filter="saturate(1.05)";if(selectedRoute==="anelo")world.style.filter="sepia(.08) saturate(.9)";if(selectedRoute==="vista")world.style.filter="saturate(1.18) brightness(1.03)"}
+$("#mapBtn").onclick=()=>{const x=$("#map");x.style.display=x.style.display==="block"?"none":"block";$("#passengers").style.display="none"};
+$("#peopleBtn").onclick=()=>{const x=$("#passengers");x.style.display=x.style.display==="block"?"none":"block";$("#map").style.display="none"};
+function setPause(v){paused=v;$("#pausePanel").style.display=v?"grid":"none";$("#pauseBtn").textContent=v?"SEGUIR":"PAUSA"}
+$("#pauseBtn").onclick=()=>setPause(!paused);$("#resumeBtn").onclick=()=>setPause(false);
+function animateTraffic(dt){document.querySelectorAll(".car").forEach((c,i)=>{let y=parseFloat(c.dataset.y||String(-12-i*24));y+=(speed*.018+7+i*2)*dt/1000;if(y>120)y=-18-i*13;c.dataset.y=y;c.style.top=y+"%";c.style.opacity=speed>5?"1":"0";c.style.transform="translateX(-50%) scale("+(0.42+y/205)+")"})}
+function loop(now){if(!running)return;const dt=Math.min(50,now-last);last=now;if(!paused){elapsed+=dt/1000;if(keys.up)speed=Math.min(88,speed+dt*.05);else speed=Math.max(0,speed-dt*.019);if(keys.down)speed=Math.max(0,speed-dt*.075);if(keys.left)lane=Math.max(-1,lane-dt*.0027);if(keys.right)lane=Math.min(1,lane+dt*.0027);lane*=.985;bus.style.transform="translateX(calc(-50% + "+lane*78+"px)) rotate("+lane*2+"deg)";km+=speed*dt/3600000*2.1;fuel=Math.max(0,fuel-speed*dt*.00042);if(fuel<=0)speed=Math.max(0,speed-dt*.08);if(eventIndex<events.length&&elapsed>=events[eventIndex].at){trigger(events[eventIndex]);eventIndex++}speedEl.textContent=Math.round(speed);fuelEl.textContent=Math.round(fuel)+"%";kmEl.textContent=km.toFixed(1)+" km";clockEl.textContent=clockTime();$("#mapNow").style.left=Math.min(92,km/routeDistance*100)+"%";animateTraffic(dt);if(km>=routeDistance)finish()}requestAnimationFrame(loop)}
+function clockTime(){const mins=Math.floor(elapsed*.72),h=6+Math.floor((50+mins)/60),m=(50+mins)%60;return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")}
+function finish(){running=false;paused=true;showMsg("SAN PATRICIO DEL CHAÑAR","Llegaste. Pero el viaje no termina acá: podés volver a salir por otra ruta.",999999);setTimeout(()=>{const b=document.createElement("button");b.className="primary";b.id="again";b.textContent="VOLVER A ELEGIR RUTA";b.style.position="absolute";b.style.zIndex="60";b.style.left="50%";b.style.top="59%";b.style.transform="translateX(-50%)";b.onclick=()=>location.reload();document.body.appendChild(b)},700)}
 </script>
 </body>
 </html>

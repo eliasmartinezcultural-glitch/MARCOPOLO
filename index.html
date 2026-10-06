@@ -24,7 +24,7 @@ h1{font-size:clamp(42px,10vw,82px);line-height:.9;margin:12px 0;font-weight:900;
 .bus-illustration .wheel{position:absolute;bottom:0;width:32px;height:32px;border-radius:50%;background:#141a1d;border:6px solid #4b5659}
 .bus-illustration .w1{left:15%}.bus-illustration .w2{right:15%}
 
-#game{display:none}
+#game{display:none}.routeChoice{display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;padding:15px 17px}.routeChoice span{font-size:12px;opacity:.7}.routeChoice.selected{background:#fff2;border-color:#fff8}.routeChoice:disabled{opacity:.5}
 #world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#9ed7ee 0 45%,#91b083 45% 100%)}
 #sky{position:absolute;inset:0 0 45%;background:linear-gradient(#86cbe5,#e9f2e8)}
 #sun{position:absolute;width:90px;height:90px;border-radius:50%;background:#fff1b2;top:10%;right:12%;box-shadow:0 0 50px #fff1b280}
@@ -73,14 +73,15 @@ h1{font-size:clamp(42px,10vw,82px);line-height:.9;margin:12px 0;font-weight:900;
 <div id="app">
 <section id="start" class="screen">
   <div class="start-card">
-    <div class="kicker">Mundo de Viajes · Alpha 0.1</div>
+    <div class="kicker">Mundo de Viajes · Alpha 0.2</div>
     <h1>MARCOPOLO</h1>
     <div class="bus-illustration"><div class="body"><div class="windows"><i></i><i></i><i></i><i></i></div></div><div class="wheel w1"></div><div class="wheel w2"></div></div>
     <p class="subtitle">No se trata de llegar rápido.<br><b>Se trata de vivir el viaje.</b></p>
-    <button class="primary" id="startBtn">Comenzar viaje</button>
+    <button class="primary" id="startBtn">Elegir viaje</button>
   </div>
 </section>
 
+<section id="routeSelect" class="screen" style="display:none;background:radial-gradient(circle at 50% 25%,#d9c8a4,#6f8175 65%,#26383a);z-index:40"><div class="start-card" style="background:#101a1dcc;border:1px solid #fff2;border-radius:26px;box-shadow:0 30px 80px #0008"><div class="kicker">MARCOPOLO · PLAN DE VIAJE</div><h2 style="font-size:clamp(30px,7vw,58px);margin:10px 0">Elegí tu salida</h2><p class="subtitle">Todas las rutas tienen un mismo destino.<br><b>San Patricio del Chañar.</b></p><div id="routeCards" style="display:grid;gap:10px;text-align:left;margin:22px 0"><button class="choice routeChoice" data-route="neuquen"><b>NEUQUÉN → CHÁÑAR</b><span>Ciudad · ruta abierta · 28 km</span></button><button class="choice routeChoice" data-route="anelo"><b>AÑELO → CHÁÑAR</b><span>Meseta · viento · 22 km</span></button><button class="choice routeChoice" data-route="vista"><b>VISTA ALEGRE → CHÁÑAR</b><span>Valle · chacras · 16 km</span></button></div><button class="primary" id="departBtn" disabled>Preparar colectivo</button></div></section>
 <section id="game">
   <div id="world"><div id="sky"></div><div id="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div id="ground"></div><div id="road"></div><div class="edge e1"></div><div class="edge e2"></div><div id="scenery"><div class="tree t1"></div><div class="tree t2"></div><div class="sign">CHAÑAR →</div></div><div id="traffic"><div class="car c1"></div><div class="car c2 red"></div><div class="car c3 blue"></div><div class="car c4 truck"></div></div></div>
   <div id="bus"><div class="shell"><div class="glass"><i></i><i></i><i></i></div><div class="bumper"></div></div><div class="wheel wl"></div><div class="wheel wr"></div></div>
@@ -96,8 +97,8 @@ h1{font-size:clamp(42px,10vw,82px);line-height:.9;margin:12px 0;font-weight:900;
 </div>
 <script>
 const $=s=>document.querySelector(s);
-const start=$("#start"), game=$("#game"), bus=$("#bus"), speedEl=$("#speed"), fuelEl=$("#fuel"), kmEl=$("#km"), msg=$("#message"), msgTitle=$("#msgTitle"), msgText=$("#msgText"), dialogue=$("#dialogue");
-let running=false, paused=false, speed=0, fuel=78, km=0, lane=0, elapsed=0, eventIndex=0, last=performance.now();
+const start=$("#start"), routeSelect=$("#routeSelect"), game=$("#game"), bus=$("#bus"), speedEl=$("#speed"), fuelEl=$("#fuel"), kmEl=$("#km"), msg=$("#message"), msgTitle=$("#msgTitle"), msgText=$("#msgText"), dialogue=$("#dialogue");
+let running=false, paused=false, speed=0, fuel=78, km=0, lane=0, elapsed=0, eventIndex=0, last=performance.now(), selectedRoute=null;
 const keys={up:false,down:false,left:false,right:false};
 const events=[
  {at:3,type:"info",title:"Salida",text:"El colectivo deja la terminal. Comienza el viaje rumbo a San Patricio del Chañar."},
@@ -108,18 +109,21 @@ const events=[
  {at:52,type:"station",title:"Parador",text:"Una estación aparece sobre la ruta. Podés detenerte o continuar."}
 ];
 function showMsg(title,text,ms=4200){msgTitle.textContent=title;msgText.textContent=text;msg.classList.add("show");clearTimeout(showMsg.t);showMsg.t=setTimeout(()=>msg.classList.remove("show"),ms)}
-function showDialogue(e){paused=true;dialogue.style.display="block";$("#who").textContent=e.who;$("#line").textContent=e.line;const c=$("#choices");c.innerHTML="";e.choices.forEach(x=>{const b=document.createElement("button");b.className="choice";b.textContent=x;b.onclick=()=>{dialogue.style.display="none";paused=false;showMsg(e.who,""" + x + """,2200)};c.appendChild(b)})}
+function showDialogue(e){paused=true;dialogue.style.display="block";$("#who").textContent=e.who;$("#line").textContent=e.line;const c=$("#choices");c.innerHTML="";e.choices.forEach(x=>{const b=document.createElement("button");b.className="choice";b.textContent=x;b.onclick=()=>{dialogue.style.display="none";paused=false;showMsg(e.who,x,2200)};c.appendChild(b)})}
 function trigger(e){if(e.type==="dialogue")showDialogue(e);else showMsg(e.title,e.text);if(e.type==="station"){paused=true;setTimeout(()=>{paused=false;fuel=Math.min(100,fuel+18);showMsg("Continuamos","El colectivo retoma la ruta con el tanque más lleno.",3000)},2600)}}
 function press(k,v){keys[k]=v}
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();press(k,true)});["pointerup","pointercancel","pointerleave"].forEach(ev=>b.addEventListener(ev,()=>press(k,false)))});
 addEventListener("keydown",e=>{if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=true;if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=true;if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true});
 addEventListener("keyup",e=>{if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=false;if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=false;if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false});
-$("#startBtn").onclick=()=>{start.style.display="none";game.style.display="block";running=true;showMsg("06:50 · Viaje 001","Destino: San Patricio del Chañar",4000);requestAnimationFrame(loop)};
+$("#startBtn").onclick=()=>{start.style.display="none";routeSelect.style.display="grid";};
+const routeNames={neuquen:"Neuquén",anelo:"Añelo",vista:"Vista Alegre"};
+document.querySelectorAll(".routeChoice").forEach(b=>b.onclick=()=>{document.querySelectorAll(".routeChoice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selectedRoute=b.dataset.route;$("#departBtn").disabled=false;});
+$("#departBtn").onclick=()=>{if(!selectedRoute)return;routeSelect.style.display="none";game.style.display="block";running=true;elapsed=0;eventIndex=0;km=0;speed=0;fuel=78;showMsg("06:50 · Salida desde "+routeNames[selectedRoute],"Destino: San Patricio del Chañar · Ruta preparada",4500);requestAnimationFrame(loop)};
 $("#mapBtn").onclick=()=>{const m=$("#map");m.style.display=m.style.display==="block"?"none":"block"};
 $("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"SEGUIR":"PAUSA";if(paused)showMsg("Pausa","El viaje queda detenido.",1500)};
 function animateTraffic(dt){document.querySelectorAll(".car").forEach((c,i)=>{let y=parseFloat(c.dataset.y||String(-10-i*22));y+=(speed*.015+8+i*2)*dt/1000;if(y>120)y=-15-i*12;c.dataset.y=y;c.style.top=y+"%";c.style.opacity=speed>5?"1":"0";c.style.transform="translateX(-50%) scale("+(0.45+y/220)+")"})}
 function loop(now){if(!running)return;const dt=Math.min(50,now-last);last=now;if(!paused){elapsed+=dt/1000;if(keys.up)speed=Math.min(86,speed+dt*.045);else speed=Math.max(0,speed-dt*.018);if(keys.down)speed=Math.max(0,speed-dt*.07);if(keys.left)lane=Math.max(-1,lane-dt*.0025);if(keys.right)lane=Math.min(1,lane+dt*.0025);lane*=.985;bus.style.transform="translateX(calc(-50% + "+(lane*70)+"px))";km+=speed*dt/3600000*1.85;fuel=Math.max(0,fuel-speed*dt*.00042);if(fuel<=0){speed=Math.max(0,speed-dt*.08);showMsg("Combustible","El tanque está vacío. La aventura se complica.",3000)}eventIndex=events.findIndex((e,i)=>i>=eventIndex&&elapsed>=e.at);if(eventIndex>=0){trigger(events[eventIndex]);eventIndex++}speedEl.textContent=Math.round(speed);fuelEl.textContent=Math.round(fuel)+"%";kmEl.textContent=km.toFixed(1)+" km";animateTraffic(dt);if(km>=8.2){finish()}}requestAnimationFrame(loop)}
-function finish(){running=false;paused=true;showMsg("Viaje completado","Llegaste a San Patricio del Chañar. Esta es apenas la primera ruta.",999999);setTimeout(()=>{const b=document.createElement("button");b.className="primary";b.textContent="VOLVER A VIAJAR";b.style.position="absolute";b.style.zIndex="60";b.style.left="50%";b.style.top="58%";b.style.transform="translate(-50%,-50%)";b.onclick=()=>location.reload();document.body.appendChild(b)},900)}
+function finish(){running=false;paused=true;showMsg("Viaje completado","Llegaste a San Patricio del Chañar. Esta es la primera versión del mundo. Próxima fase: rutas vivas, pasajeros con memoria y paradores.",999999);setTimeout(()=>{const b=document.createElement("button");b.className="primary";b.textContent="VOLVER A VIAJAR";b.style.position="absolute";b.style.zIndex="60";b.style.left="50%";b.style.top="58%";b.style.transform="translate(-50%,-50%)";b.onclick=()=>location.reload();document.body.appendChild(b)},900)}
 </script>
 </body>
 </html>
